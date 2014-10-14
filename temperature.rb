@@ -2,18 +2,18 @@ require 'net/http'
 LONG_MONTH = [1,3,5,7,8,10,12]
 SHORT_MONTH = [4,6,9,11]
 
-class TempRecord
-  def initialize(in_time, in_max_temp, in_min_temp)
-    @time = in_time
-    @max_temp = in_max_temp
-    @min_temp = in_min_temp
+class TemperatureRecord
+  def initialize(date, max, min)
+    @time = date
+    @max = max
+    @min = min
   end
   
   def show
-    puts "#{@time} max:#{@max_temp} min:#{@min_temp}"
+    puts "#{@date} max:#{@max} min:#{@min}"
   end
 
-  attr_reader :max_temp, :min_temp
+  attr_reader :max, :min
 end
 
 def get_max_and_min_degree(html_code)
@@ -25,9 +25,9 @@ def get_max_and_min_degree(html_code)
   return max_degree, min_degree
 end
 
-def show_temp(in_month)
-  record_array = []
-  month = in_month
+def show_temperature(month)
+  records = []
+  month = month
   if LONG_MONTH.include?(month)
     cycle = 31
   elsif SHORT_MONTH.include?(month)
@@ -42,23 +42,30 @@ def show_temp(in_month)
   day = 0
   cycle.times do
     day += 1
-    url = "/weather/jp/past/13/4410/detail.html?c=2014&m=#{month}&d=#{day}"
-	  html_code = Net::HTTP.get('weather.yahoo.co.jp', url)
+    url = URI("http://weather.yahoo.co.jp/weather/jp/past/13/4410/detail.html?c=2014&m=#{month}&d=#{day}")
+    res = Net::HTTP.get_response(url)
+    if res.message != 'OK' && day == 1
+      puts "指定された月の平均気温は取得出来ません"
+      return
+    elsif  res.message != 'OK' && day > 1
+      next
+    end
+    html_code = Net::HTTP.get(url)
     degrees = get_max_and_min_degree(html_code)
-    record = TempRecord.new("2014/#{month}/#{day}", degrees[0], degrees[1])
+    record = TemperatureRecord.new("2014/#{month}/#{day}", degrees[0], degrees[1])
     record.show
-    record_array.push(record)
+    records.push(record)
   end
   
-  avg_max = 0
-  avg_min = 0
-  record_array.each do
+  sum_max = 0
+  sum_min = 0
+  records.each do
     |v| 
-    avg_max += v.max_temp
-    avg_min += v.min_temp
+    sum_max += v.max
+    sum_min += v.min
   end
-  avg_max = avg_max / record_array.length
-  avg_min = avg_min / record_array.length
+  avg_max = sum_max / records.length
+  avg_min = sum_min / records.length
 
   puts
   printf("%d月の平均最高気温 = %.1f\n", month, avg_max)
@@ -67,5 +74,5 @@ end
 
 
 query_month = ARGF.argv[0].to_i
-show_temp(query_month)
+show_temperature(query_month)
 
