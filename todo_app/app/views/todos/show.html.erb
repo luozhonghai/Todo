@@ -10,5 +10,10 @@
   <%= @todo.task %>
 </p>
 
+<p>
+  <strong>Memo:</strong><br/>
+  <%= new_line(@todo.memo) %>
+</p>
+
 <%= link_to 'Edit', edit_todo_path(@todo) %> |
 <%= link_to 'Back', todos_path %>

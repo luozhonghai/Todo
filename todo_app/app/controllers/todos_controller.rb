@@ -3,8 +3,8 @@ class TodosController < ApplicationController
 
   # GET /todos
   def index
-    @todo = Todo.all
-    logger.debug @todo.inspect
+    @todos = Todo.all
+    #logger.debug @todo.inspect
   end
 
   # GET /todos/1
@@ -54,6 +54,6 @@ class TodosController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def todo_params
-      params.require(:todo).permit(:due, :task)
+      params.require(:todo).permit(:due, :task, :memo)
     end
 end
