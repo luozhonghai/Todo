@@ -1,0 +1,8 @@
+ja:
+  activerecord:
+    models:
+      todo: TODO
+    attributes:
+      todo:
+        task: タスク
+        due: 期日
