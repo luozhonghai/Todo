@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :users  do
+    resources :todos
+  end
+
   resources :todos
 
   # The priority is based upon order of creation: first created -> highest priority.
