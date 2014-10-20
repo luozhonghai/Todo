@@ -1,0 +1,44 @@
+CREATE TABLE station (
+ id CHAR(10) NOT NULL,
+ name CHAR(10)
+);
+
+ALTER TABLE station ADD CONSTRAINT PK_station PRIMARY KEY (id);
+
+
+CREATE TABLE subway (
+ id CHAR(10) NOT NULL,
+ name CHAR(10)
+);
+
+ALTER TABLE subway ADD CONSTRAINT PK_subway PRIMARY KEY (id);
+
+
+CREATE TABLE transfer_info (
+ id CHAR(10) NOT NULL,
+ subway_id CHAR(10),
+ station_id CHAR(10)
+);
+
+ALTER TABLE transfer_info ADD CONSTRAINT PK_transfer_info PRIMARY KEY (id);
+
+
+CREATE TABLE station_info (
+ id CHAR(10) NOT NULL,
+ subway_id CHAR(10),
+ station_id CHAR(10),
+ station_order CHAR(10),
+ distance CHAR(10)
+);
+
+ALTER TABLE station_info ADD CONSTRAINT PK_station_info PRIMARY KEY (id);
+
+
+ALTER TABLE transfer_info ADD CONSTRAINT FK_transfer_info_0 FOREIGN KEY (subway_id) REFERENCES subway (id);
+ALTER TABLE transfer_info ADD CONSTRAINT FK_transfer_info_1 FOREIGN KEY (station_id) REFERENCES station (id);
+
+
+ALTER TABLE station_info ADD CONSTRAINT FK_station_info_0 FOREIGN KEY (subway_id) REFERENCES subway (id);
+ALTER TABLE station_info ADD CONSTRAINT FK_station_info_1 FOREIGN KEY (station_id) REFERENCES station (id);
+
+

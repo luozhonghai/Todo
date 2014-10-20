@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th>Due</th>
+      <th>Name</th>
       <th>Task</th>
       <th colspan="3"></th>
     </tr>
@@ -15,6 +16,7 @@
     <% @todos.each do |todo| %>
       <tr>
         <td><%= todo.due %></td>
+        <td><%= todo.user.name %></td>
         <td><%= todo.task %></td>
         <td><%= link_to 'Show', todo %></td>
         <td><%= link_to 'Edit', edit_todo_path(todo) %></td>
@@ -23,7 +25,7 @@
     <% end %>
   </tbody>
 </table>
-
+<%= paginate @todos %>
 <br>
 
 <%= link_to 'New Todo', new_todo_path %>
