@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
     # ここを考えて下さい。email/passwordで認証できれば true を認証できなければ falseを戻します。
     # さらに、認証できた場合はインスタンスのidに認証されたユーザーのidが入るようにします
     u = User.find_by(email: self.email, password: Digest::SHA1.hexdigest(self.password))
-
     if u != nil
       self.id = u.id
       true
