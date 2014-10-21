@@ -5,7 +5,8 @@ class LoginsController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save
+    if @user.registered?
+      session[:login] = @user.id
       redirect_to todos_path
     else
       render :new
@@ -19,6 +20,6 @@ class LoginsController < ApplicationController
 
   private
     def user_params
-      params.require(:user).permit(:emal,:password)
+      params.require(:user).permit(:email,:password)
     end
 end

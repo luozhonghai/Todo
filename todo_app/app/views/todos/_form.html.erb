@@ -17,7 +17,7 @@
   </div>
   <div class="field">
     <%= f.label :user %><br>
-    <%= f.select :user_id, [['sss',1], ['Yamata',2],['Kawada',3],['Umida',4]] %>
+    <%= f.select :user_id, User.all.map{|u| [u.name, u.id]}%>
   </div>
   <div class="field">
     <%= f.label :task %><br>

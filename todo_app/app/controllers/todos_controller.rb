@@ -6,9 +6,11 @@ class TodosController < ApplicationController
     #@todos =Todo.order(:due).page(params[:page]).per(3)
 
     if params[:user_id]
-      @todos = Todo.where(user_id: params[:user_id]).order(:due).page(params[:page]).per(3)
+      #@todos = Todo.where(user_id: params[:user_id]).order(:due).page(params[:page]).per(3)
+      @todos = Todo.list_by_user(params[:user_id].page(params[:page]))
     else
-      @todos =Todo.order(:due).page(params[:page]).per(3)
+      #@todos =Todo.order(:due).page(params[:page]).per(3)
+      @todos = Todo.list_all.page(params[:page])
     end
     #logger.debug @todo.inspect
   end
