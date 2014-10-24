@@ -1,0 +1,57 @@
+<html>
+<head>
+  <title>JavaScript No.1</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<script type="text/javascript">
+  var Customer = function(name){
+    this._name = name;
+    this._tickets = new Array();
+  }
+  Customer.prototype = {
+    buy: function(ticket) {
+      this._tickets.push(ticket)
+      ticket._buyers.push(this)
+    }
+  }
+
+  var Ticket = function(item, price){
+    this._item = item;
+    this._price = price;
+    this._buyers = new Array();
+  }
+  Ticket.prototype = {
+    sell: function(buyer) {
+      this._buyers.push(buyer);
+      buyer._tickets.push(this);
+    },
+    total_sales: function() {
+      return this._buyers.length * this._price;
+    }
+  }
+
+  function puts(content) {
+    console.log(content);
+  }
+
+  yamada = new Customer("Taro Yamada");
+  kawada = new Customer("Jiro Kawada");
+  oakada = new Customer("Saburo Okada");
+
+  mozart = new Ticket("Piano Concerto No.24", 5000);
+  wagner = new Ticket("Tristan und Isolde", 10000);
+
+  yamada.buy(mozart);
+  kawada.buy(wagner);
+  oakada.buy(wagner);
+  wagner.sell(yamada);
+  mozart.sell(oakada);
+
+  for(customer in wagner._buyers){
+    puts(wagner._buyers[customer]._name);
+  }
+  puts(wagner.total_sales());
+</script>
+</body>
+</html>
