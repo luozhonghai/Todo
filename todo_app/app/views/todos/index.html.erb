@@ -13,12 +13,15 @@
 
   <tbody>
     <% @todos.each do |todo| %>
-      <tr>
-        <td><%= todo.due %></td>
-        <td><%= todo.user.name %></td>
-        <td><%= todo.task %></td>
-        <td><%= link_to 'Show', todo %></td>
-        <td><%= link_to 'Edit', edit_todo_path(todo) %></td>
+      <tr id=<%= todo.id %> >
+        <td class="due"><%= todo.due %></td>
+        <td class="name"><%= todo.user.name %></td>
+        <td class="task"><%= todo.task %></td>
+        <td>
+          <%= link_to 'Quick Show', todo, remote:true, class: 'quick_show' %>
+          <%= link_to 'Show', todo %>
+        </td>
+        <td><%= link_to 'Edit', edit_todo_path(todo), remote:true, class: 'quick_edit' %></td>
         <td><%= link_to 'Destroy', todo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
@@ -27,5 +30,31 @@
 <%= paginate @todos %>
 <br>
 
+<div id="show_area"></div>
+<br />
+<%= javascript_tag do %>
+  $('a.quick_show').on('ajax:success',function (event, data, status, xhr){
+    $('#show_area').html(data);
+  })
+
+  $('a.quick_edit').on('ajax:success',function (event, data, status, xhr){
+    $('#show_area').html(data);
+  })
+  $(document).on('ajax:success','#todo_form',function (event, data, status, xhr){
+  
+  if(data.errors_1 != null){
+    $(".error_info").remove();
+    for(error in data)
+      $('#show_area').prepend("<li class=\"error_info\">"+data[error]+"</li>");
+  }
+  else{
+    var edit_item = $("#"+data.id);
+    edit_item.children(".due").text(data.due);
+    edit_item.children(".name").text(data.user_name);
+    edit_item.children(".task").text(data.task);
+  }
+})
+
+<% end %>
 <%= link_to 'New Todo', new_todo_path %>
 <%= link_to 'logout', login_path(0), method: :delete %>

@@ -34,21 +34,21 @@ class Ticket
   attr_accessor :buyers
 end
 
-# yamada = Customer.new("Taro Yamada")
-# kawada = Customer.new("Jiro Kawada")
-# oakada = Customer.new("Saburo Okada")
+yamada = Customer.new("Taro Yamada")
+kawada = Customer.new("Jiro Kawada")
+oakada = Customer.new("Saburo Okada")
 
-# mozart = Ticket.new("Piano Concerto No.24", 5000)
-# wagner = Ticket.new("Tristan und Isolde", 10000)
+mozart = Ticket.new("Piano Concerto No.24", 5000)
+wagner = Ticket.new("Tristan und Isolde", 10000)
 
-# yamada.buy(mozart)
-# kawada.buy(wagner)
-# oakada.buy(wagner)
-# wagner.sell(yamada)
-# mozart.sell(oakada)
+yamada.buy(mozart)
+kawada.buy(wagner)
+oakada.buy(wagner)
+wagner.sell(yamada)
+mozart.sell(oakada)
 
-# for customer in wagner.buyers
-#   puts customer.name
-# end
+for customer in wagner.buyers
+  puts customer.name
+end
 
-# puts wagner.total_sales
+puts wagner.total_sales

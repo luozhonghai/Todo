@@ -17,6 +17,9 @@ class TodosController < ApplicationController
 
   # GET /todos/1
   def show
+    if request.xml_http_request?
+      render partial: 'show_body'
+    end
   end
 
   # GET /todos/new
@@ -26,6 +29,9 @@ class TodosController < ApplicationController
 
   # GET /todos/1/edit
   def edit
+    if request.xml_http_request?
+      render partial: 'form'
+    end
   end
 
   # POST /todos
@@ -42,9 +48,23 @@ class TodosController < ApplicationController
   # PATCH/PUT /todos/1
   def update
     if @todo.update(todo_params)
-      redirect_to @todo, notice: 'Todo was successfully updated.'
+      if request.xhr?
+        render :json =>{id: @todo.id, due: @todo.due, task: @todo.task, user_name: @todo.user.name}
+      else
+        redirect_to @todo, notice: 'Todo was successfully updated.'
+      end
     else
-      render :edit
+      if request.xhr?
+        errors = Hash.new(0)
+        errors_count = 0;
+        @todo.errors.full_messages.each do |message|
+          errors_count += 1
+          errors["errors_"+errors_count.to_s] = message
+        end
+        render :json => errors
+      else
+        render :edit
+      end
     end
   end
 

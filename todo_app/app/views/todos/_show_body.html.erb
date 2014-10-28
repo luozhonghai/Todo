@@ -1,0 +1,19 @@
+<p>
+  <strong>Due:</strong>
+  <%= @todo.due %>
+</p>
+
+<p>
+  <strong>Task:</strong>
+  <%= @todo.task %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @todo.user.name %>
+</p>
+
+<p>
+  <strong>Memo:</strong><br/>
+  <%= new_line(@todo.memo) %>
+</p>
